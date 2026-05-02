@@ -8,7 +8,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:8000',
-      'https://tasknest-frontend.vercel.app',
+      'https://https://tasknest-56zy.vercel.app/login.vercel.app',
     ],
     credentials: true,
   });
