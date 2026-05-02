@@ -6,9 +6,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.enableCors({
-    origin: 'http://localhost:8000',
+    origin: [
+      'http://localhost:8000',
+      'https://tasknest-frontend.vercel.app',
+    ],
     credentials: true,
   });
-  await app.listen(7000);
+  await app.listen(process.env.PORT || 7000);
 }
 bootstrap();
