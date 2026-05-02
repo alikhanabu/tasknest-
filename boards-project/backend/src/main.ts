@@ -1,26 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import cookieParser = require('cookie-parser');
+import { ExpressAdapter } from '@nestjs/platform-express';
+import * as express from 'express';
+import * as cookieParser from 'cookie-parser';
 
-let app: any;
+const server = express();
 
 async function bootstrap() {
-  if (!app) {
-    app = await NestFactory.create(AppModule);
-    app.use(cookieParser());
-    app.enableCors({
-      origin: ['http://localhost:8000', 'https://tasknest-56zy.vercel.app'],
-      credentials: true,
-    });
-    await app.init();
-  }
-  return app;
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+  app.use(cookieParser());
+  app.enableCors({
+    origin: ['http://localhost:8000', 'https://tasknest-56zy.vercel.app'],
+    credentials: true,
+  });
+  await app.init();
 }
 
 bootstrap();
 
-export default async function handler(req: any, res: any) {
-  const server = await bootstrap();
-  const httpAdapter = server.getHttpAdapter();
-  httpAdapter.getInstance()(req, res);
-}
+export default server;
